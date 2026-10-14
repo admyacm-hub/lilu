@@ -6,6 +6,14 @@
     <title>LiluTrans - Transporte de Carga e Mercadorias</title>
     <meta name="description" content="Transporte de carga e mercadorias em Luanda, Angola. Aluguer de carrinhas e camiões para entregas rápidas e seguras. Peça o seu orçamento!">
     
+    <!-- PWA META TAGS -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0B2239">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LiluTrans">
+    <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +43,6 @@
     
     <style>
         html { scroll-behavior: smooth; }
-        
-        /* Fundo do Hero */
         .hero-bg {
             background-color: #0B2239;
             background-image: radial-gradient(circle at top right, rgba(255, 193, 7, 0.15), transparent 40%);
@@ -62,20 +68,17 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             animation: pulse-whatsapp 2s infinite, bounce-whatsapp 3s infinite;
         }
-        
         .whatsapp-float:hover {
             transform: scale(1.15) rotate(10deg);
             background-color: #128C7E;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
             animation-play-state: paused;
         }
-
         @keyframes pulse-whatsapp {
             0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
             100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
-
         @keyframes bounce-whatsapp {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-10px); }
@@ -88,13 +91,10 @@
             transform: translateY(40px);
             transition: all 0.8s ease-out;
         }
-        
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Atraso em cascata para cartões */
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
@@ -113,9 +113,7 @@
         }
 
         /* --- LINKS DO MENU ANIMADOS --- */
-        .nav-link {
-            position: relative;
-        }
+        .nav-link { position: relative; }
         .nav-link::after {
             content: '';
             position: absolute;
@@ -126,26 +124,40 @@
             background-color: #FFC107;
             transition: width 0.3s ease;
         }
-        .nav-link:hover::after {
-            width: 100%;
-        }
+        .nav-link:hover::after { width: 100%; }
 
         /* --- FAQ ACORDEÃO SUAVE --- */
-        details > summary {
-            list-style: none;
-        }
-        details > summary::-webkit-details-marker {
-            display: none;
-        }
-        details[open] .faq-icon {
-            transform: rotate(180deg);
-        }
-        details[open] .faq-content {
-            animation: fadeIn 0.4s ease-in-out;
-        }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .faq-icon { transform: rotate(180deg); }
+        details[open] .faq-content { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- BANNER DE INSTALAÇÃO PWA --- */
+        #pwa-install-banner {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background-color: #0B2239;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.5s ease-in-out;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            max-width: 90%;
+            width: 400px;
+        }
+        #pwa-install-banner.show {
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
@@ -153,6 +165,17 @@
 
     <!-- Barra de Progresso de Leitura -->
     <div id="progress-bar"></div>
+
+    <!-- BANNER DE INSTALAÇÃO PWA -->
+    <div id="pwa-install-banner">
+        <img src="./icons/icon-192x192.png" alt="LiluTrans App" class="w-12 h-12 rounded-lg">
+        <div class="flex-1">
+            <p class="font-bold text-sm">Instale a App LiluTrans</p>
+            <p class="text-xs text-gray-400">Acesso rápido e funciona offline.</p>
+        </div>
+        <button id="pwa-install-btn" class="bg-gold text-navy font-bold py-2 px-4 rounded-lg text-sm hover:bg-yellow-400 transition">Instalar</button>
+        <button id="pwa-close-btn" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
 
     <!-- 1. CABEÇALHO FIXO -->
     <header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300">
@@ -210,7 +233,6 @@
     <section id="inicio" class="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Texto -->
                 <div class="text-center lg:text-left reveal">
                     <span class="inline-block bg-gold/20 text-gold font-bold tracking-wider uppercase text-sm px-4 py-1 rounded-full mb-4">
                         Transporte de Carga e Mercadorias
@@ -221,8 +243,6 @@
                     <p class="text-xl text-gray-300 mb-8 font-light">
                         A sua carga em boas mãos. Agilidade, segurança e profissionalismo do início ao fim.
                     </p>
-                    
-                    <!-- Botões CTA -->
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="https://wa.me/244949870787?text=Ol%C3%A1,%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20de%20transporte." target="_blank" class="bg-gold text-navy font-bold py-4 px-8 rounded-full shadow-lg hover:bg-yellow-400 transition transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2 text-lg relative overflow-hidden group">
                             <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
@@ -234,21 +254,14 @@
                         </a>
                     </div>
                 </div>
-
-                <!-- Imagem / Elemento Visual -->
                 <div class="relative mt-10 lg:mt-0 reveal reveal-delay-2">
-                    <!-- Selo Flutuante -->
                     <div class="absolute -top-6 -right-2 md:top-4 md:-right-6 bg-gold text-navy font-bold py-2 px-6 rounded-lg shadow-xl transform rotate-3 z-20 animate-pulse">
                         <i class="fa-solid fa-shield-halved mr-2"></i> Frota Segura e Equipada
                     </div>
-                    
-                    <!-- Imagem da Carrinha (Substitua o src pela imagem real da sua frota) -->
                     <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Frota LiluTrans - Carrinha Branca" class="rounded-2xl shadow-2xl w-full object-cover h-[300px] md:h-[400px] border-4 border-white/10 transform transition duration-500 hover:scale-[1.02]">
                 </div>
             </div>
         </div>
-        
-        <!-- Formas Decorativas -->
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
             <svg class="relative block w-[calc(110%+1.3px)] h-[50px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-ice"></path>
@@ -264,9 +277,7 @@
                 <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
                 <p class="text-lg text-gray-600">Alugamos mediante a distância e a carga por viagem. Soluções flexíveis para o seu negócio.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
                 <div class="bg-white p-8 rounded-2xl shadow-md border-b-4 border-gold hover:shadow-2xl hover:-translate-y-2 transition duration-300 reveal reveal-delay-1">
                     <div class="w-16 h-16 bg-navy/5 rounded-full flex items-center justify-center mb-6 transition transform group-hover:scale-110">
                         <i class="fa-solid fa-boxes-stacked text-3xl text-navy"></i>
@@ -274,8 +285,6 @@
                     <h3 class="text-xl font-bold text-navy mb-3">Cargas Diversas</h3>
                     <p class="text-gray-600">Transportamos mercadorias de pequenas e médias dimensões com todo o cuidado que o seu produto exige.</p>
                 </div>
-                
-                <!-- Card 2 -->
                 <div class="bg-white p-8 rounded-2xl shadow-md border-b-4 border-gold hover:shadow-2xl hover:-translate-y-2 transition duration-300 reveal reveal-delay-2">
                     <div class="w-16 h-16 bg-navy/5 rounded-full flex items-center justify-center mb-6 transition transform group-hover:scale-110">
                         <i class="fa-solid fa-route text-3xl text-navy"></i>
@@ -283,8 +292,6 @@
                     <h3 class="text-xl font-bold text-navy mb-3">Entregas por Distância</h3>
                     <p class="text-gray-600">Cobrimos rotas locais e interprovinciais, garantindo que a sua carga chegue ao destino de forma rápida.</p>
                 </div>
-
-                <!-- Card 3 -->
                 <div class="bg-white p-8 rounded-2xl shadow-md border-b-4 border-gold hover:shadow-2xl hover:-translate-y-2 transition duration-300 reveal reveal-delay-3">
                     <div class="w-16 h-16 bg-navy/5 rounded-full flex items-center justify-center mb-6 transition transform group-hover:scale-110">
                         <i class="fa-solid fa-handshake text-3xl text-navy"></i>
@@ -304,12 +311,8 @@
                 <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
                 <p class="text-lg text-gray-600">O valor do transporte é definido de forma transparente, sem surpresas.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 relative">
-                <!-- Linha conectora (Desktop) -->
                 <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-gray-200 z-0"></div>
-
-                <!-- Passo 1 -->
                 <div class="relative z-10 flex flex-col items-center text-center reveal reveal-delay-1">
                     <div class="w-24 h-24 bg-navy rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white transition transform hover:scale-110 hover:bg-navy/90">
                         <i class="fa-solid fa-map-location-dot text-4xl text-gold"></i>
@@ -317,8 +320,6 @@
                     <h3 class="text-xl font-bold text-navy mb-3">1. Distância</h3>
                     <p class="text-gray-600 px-4">O valor é calculado de acordo com os quilómetros percorridos entre a origem e o destino.</p>
                 </div>
-
-                <!-- Passo 2 -->
                 <div class="relative z-10 flex flex-col items-center text-center reveal reveal-delay-2">
                     <div class="w-24 h-24 bg-navy rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white transition transform hover:scale-110 hover:bg-navy/90">
                         <i class="fa-solid fa-weight-hanging text-4xl text-gold"></i>
@@ -326,8 +327,6 @@
                     <h3 class="text-xl font-bold text-navy mb-3">2. Volume e Peso</h3>
                     <p class="text-gray-600 px-4">Avaliação precisa baseada no volume e peso da sua carga para garantir o melhor preço.</p>
                 </div>
-
-                <!-- Passo 3 -->
                 <div class="relative z-10 flex flex-col items-center text-center reveal reveal-delay-3">
                     <div class="w-24 h-24 bg-navy rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white transition transform hover:scale-110 hover:bg-navy/90">
                         <i class="fa-solid fa-file-invoice-dollar text-4xl text-gold"></i>
@@ -347,10 +346,8 @@
                 <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
                 <p class="text-lg text-gray-600">Obtenha uma estimativa instantânea do valor do seu transporte.</p>
             </div>
-
             <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100 transition duration-500 hover:shadow-2xl">
                 <form id="freight-calculator-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Distância -->
                     <div>
                         <label for="distancia" class="block text-sm font-semibold text-navy mb-2">Distância (em km)</label>
                         <div class="relative group">
@@ -360,8 +357,6 @@
                             <input type="number" id="distancia" name="distancia" min="1" required class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition bg-ice" placeholder="Ex: 150">
                         </div>
                     </div>
-
-                    <!-- Peso / Volume -->
                     <div>
                         <label for="peso" class="block text-sm font-semibold text-navy mb-2">Peso/Volume (kg ou m³)</label>
                         <div class="relative group">
@@ -371,8 +366,6 @@
                             <input type="number" id="peso" name="peso" min="1" required class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition bg-ice" placeholder="Ex: 50">
                         </div>
                     </div>
-
-                    <!-- Tipo de Carga -->
                     <div>
                         <label for="tipo_carga" class="block text-sm font-semibold text-navy mb-2">Tipo de Carga</label>
                         <select id="tipo_carga" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition bg-ice">
@@ -381,16 +374,12 @@
                             <option value="1.5">Carga Perigosa/Especial (+50%)</option>
                         </select>
                     </div>
-
-                    <!-- Botão de Calcular -->
                     <div class="flex items-end">
                         <button type="button" id="btn-calcular" class="w-full bg-navy text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-navy/90 transition transform hover:-translate-y-1 hover:shadow-lg flex items-center justify-center gap-2">
                             <i class="fa-solid fa-calculator"></i> Calcular Estimativa
                         </button>
                     </div>
                 </form>
-
-                <!-- Resultado da Calculadora -->
                 <div id="resultado-calculadora" class="hidden mt-8 p-6 bg-ice rounded-xl border-l-4 border-gold shadow-sm transition-all duration-500">
                     <p class="text-sm text-gray-500 mb-1">Estimativa de Frete:</p>
                     <p class="text-3xl font-extrabold text-navy mb-2" id="valor-estimado">0,00 Kz</p>
@@ -411,35 +400,28 @@
                 <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
                 <p class="text-lg text-gray-300">Porquê escolher a LiluTrans para o seu transporte?</p>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Diferencial 1 -->
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-300 transform hover:-translate-y-1 reveal reveal-delay-1">
                     <i class="fa-solid fa-shield-halved text-4xl text-gold mb-4 transition transform hover:scale-110"></i>
                     <h3 class="text-xl font-bold mb-2">Segurança</h3>
                     <p class="text-gray-400">Segurança máxima na sua mercadoria, do embarque à entrega.</p>
                 </div>
-                <!-- Diferencial 2 -->
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-300 transform hover:-translate-y-1 reveal reveal-delay-2">
                     <i class="fa-solid fa-clock text-4xl text-gold mb-4 transition transform hover:scale-110"></i>
                     <h3 class="text-xl font-bold mb-2">Pontualidade</h3>
                     <p class="text-gray-400">Compromisso rigoroso com os prazos de entrega acordados.</p>
                 </div>
-                <!-- Diferencial 3 -->
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-300 transform hover:-translate-y-1 reveal reveal-delay-3">
                     <i class="fa-solid fa-user-tie text-4xl text-gold mb-4 transition transform hover:scale-110"></i>
                     <h3 class="text-xl font-bold mb-2">Atendimento</h3>
                     <p class="text-gray-400">Atendimento personalizado e suporte dedicado para cada cliente.</p>
                 </div>
-                <!-- Diferencial 4 -->
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-300 transform hover:-translate-y-1 reveal reveal-delay-4">
                     <i class="fa-solid fa-box-open text-4xl text-gold mb-4 transition transform hover:scale-110"></i>
                     <h3 class="text-xl font-bold mb-2">Versatilidade</h3>
                     <p class="text-gray-400">Capacidade para transportar cargas diversas, pequenas e médias.</p>
                 </div>
             </div>
-
-            <!-- Selos de Garantia -->
             <div class="mt-16 flex flex-wrap justify-center gap-6 md:gap-12 reveal">
                 <div class="flex items-center gap-2 text-xl font-bold transition hover:text-gold cursor-default">
                     <i class="fa-solid fa-check-circle text-gold"></i> Rápido
@@ -462,9 +444,7 @@
                 <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
                 <p class="text-lg text-gray-600">Tire as suas dúvidas antes de solicitar o seu transporte.</p>
             </div>
-
             <div class="space-y-4">
-                <!-- Pergunta 1 -->
                 <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition duration-300 hover:shadow-md">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
                         <span>Vocês transportam mercadorias frágeis?</span>
@@ -476,8 +456,6 @@
                         Sim. A LiluTrans possui experiência no transporte de cargas diversas, incluindo mercadorias frágeis. A sua carga é embalada e fixada com todo o cuidado necessário para garantir que chegue intacta ao destino. Recomendamos que nos informe antecipadamente sobre a natureza da carga para prepararmos o veículo adequado.
                     </div>
                 </details>
-
-                <!-- Pergunta 2 -->
                 <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition duration-300 hover:shadow-md">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
                         <span>Qual é o prazo de entrega para fora de Luanda?</span>
@@ -489,8 +467,6 @@
                         O prazo de entrega varia consoante a distância e as condições das vias. Para entregas interprovinciais, normalmente o prazo é acordado no momento do orçamento. Garantimos pontualidade rigorosa e mantemos o cliente informado sobre o estado da entrega.
                     </div>
                 </details>
-
-                <!-- Pergunta 3 -->
                 <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition duration-300 hover:shadow-md">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
                         <span>Como é feito o pagamento?</span>
@@ -502,8 +478,6 @@
                         O pagamento é combinado no momento da contratação do serviço. Trabalhamos com transferência bancária, depósito ou pagamento em numerário (mediante acordo prévio). Para novos clientes, geralmente solicitamos um sinal de reserva e o restante na entrega.
                     </div>
                 </details>
-
-                <!-- Pergunta 4 -->
                 <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition duration-300 hover:shadow-md">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
                         <span>A mercadoria tem seguro?</span>
@@ -523,18 +497,12 @@
     <section id="contactos" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="bg-ice rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-gray-100">
-                
-                <!-- Lado Esquerdo: Informação -->
                 <div class="lg:w-2/5 bg-navy p-10 text-white flex flex-col justify-between relative overflow-hidden">
-                    <!-- Detalhe decorativo -->
                     <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-gold rounded-full opacity-10 animate-pulse"></div>
-                    
                     <div class="relative z-10">
                         <h2 class="text-3xl font-extrabold mb-4">O seu transporte é a nossa <span class="text-gold">prioridade!</span></h2>
                         <p class="text-gray-300 mb-10">Preencha o formulário ou contacte-nos diretamente. Estamos prontos para servir.</p>
-                        
                         <div class="space-y-6">
-                            <!-- Telefones -->
                             <a href="tel:+244949870787" class="flex items-center gap-4 group">
                                 <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-gold transition transform group-hover:scale-110">
                                     <i class="fa-solid fa-phone text-xl text-gold group-hover:text-navy transition"></i>
@@ -545,8 +513,6 @@
                                     <p class="font-bold text-lg group-hover:text-gold transition">+244 959 940 236</p>
                                 </div>
                             </a>
-                            
-                            <!-- Email -->
                             <a href="mailto:lilufiangola@gmail.com" class="flex items-center gap-4 group">
                                 <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-gold transition transform group-hover:scale-110">
                                     <i class="fa-solid fa-envelope text-xl text-gold group-hover:text-navy transition"></i>
@@ -559,8 +525,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Lado Direito: Formulário -->
                 <div class="lg:w-3/5 p-10 bg-white">
                     <h3 class="text-2xl font-bold text-navy mb-6">Solicite já o seu orçamento</h3>
                     <form action="https://wa.me/244949870787" method="get" target="_blank" class="space-y-4">
@@ -574,7 +538,6 @@
                                 <input type="tel" name="phone" required class="w-full px-4 py-3 rounded-lg bg-ice border border-gray-200 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition" placeholder="+244 9XX XXX XXX">
                             </div>
                         </div>
-                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-600 mb-1">Origem</label>
@@ -585,12 +548,10 @@
                                 <input type="text" name="destino" required class="w-full px-4 py-3 rounded-lg bg-ice border border-gray-200 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition" placeholder="Local de entrega">
                             </div>
                         </div>
-
                         <div>
                             <label class="block text-sm font-semibold text-gray-600 mb-1">Detalhes da Carga</label>
                             <textarea name="detalhes" rows="3" required class="w-full px-4 py-3 rounded-lg bg-ice border border-gray-200 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition" placeholder="Descreva o tipo de mercadoria, peso aproximado, volume, etc."></textarea>
                         </div>
-
                         <button type="submit" class="w-full bg-gold text-navy font-bold text-lg py-4 rounded-lg shadow-md hover:bg-yellow-400 transition transform hover:-translate-y-1 hover:shadow-lg flex items-center justify-center gap-2 mt-4 relative overflow-hidden group">
                             <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-96 group-hover:h-96 opacity-20"></span>
                             <i class="fa-brands fa-whatsapp text-2xl relative z-10"></i> 
@@ -607,7 +568,6 @@
     <footer class="bg-[#051220] text-white pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-                <!-- Coluna 1: Logo e Descrição -->
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2 mb-4 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                         <i class="fa-solid fa-truck-fast text-3xl text-gold"></i>
@@ -622,8 +582,6 @@
                         <a href="https://wa.me/244949870787" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold hover:text-navy transition transform hover:-translate-y-1"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
-
-                <!-- Coluna 2: Links Rápidos -->
                 <div>
                     <h4 class="text-lg font-bold mb-4 border-b border-gold/30 pb-2 inline-block">Navegação</h4>
                     <ul class="space-y-2">
@@ -636,8 +594,6 @@
                         <li><a href="#contactos" class="text-gray-400 hover:text-gold transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-xs"></i> Contactos</a></li>
                     </ul>
                 </div>
-
-                <!-- Coluna 3: Contactos -->
                 <div>
                     <h4 class="text-lg font-bold mb-4 border-b border-gold/30 pb-2 inline-block">Contactos</h4>
                     <ul class="space-y-3">
@@ -656,8 +612,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Direitos Reservados -->
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-gray-500 text-sm text-center md:text-left">
                     &copy; 2026 LiluTrans. Todos os direitos reservados.
@@ -681,18 +635,9 @@
         // 1. Menu Mobile
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // Fechar menu ao clicar num link
+        btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
         const links = menu.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
+        links.forEach(link => { link.addEventListener('click', () => { menu.classList.add('hidden'); }); });
 
         // 2. Calculadora de Frete
         document.getElementById('btn-calcular').addEventListener('click', function() {
@@ -716,24 +661,18 @@
             document.getElementById('valor-estimado').innerText = valorFormatado;
             const resultadoDiv = document.getElementById('resultado-calculadora');
             resultadoDiv.classList.remove('hidden');
-            
-            // Animação suave ao mostrar o resultado
             resultadoDiv.style.opacity = 0;
-            setTimeout(() => {
-                resultadoDiv.style.opacity = 1;
-            }, 50);
+            setTimeout(() => { resultadoDiv.style.opacity = 1; }, 50);
 
             const mensagem = `Olá, fiz uma simulação no site.%0A%0A*Distância:* ${distancia} km%0A*Peso/Volume:* ${peso}%0A*Tipo de Carga:* ${document.getElementById('tipo_carga').options[document.getElementById('tipo_carga').selectedIndex].text}%0A*Valor Estimado:* ${valorFormatado}%0A%0AGostaria de confirmar este orçamento.`;
             document.getElementById('link-whatsapp-calculadora').href = `https://wa.me/244949870787?text=${mensagem}`;
         });
 
-        // 3. Scroll Reveal (Animações de Entrada)
+        // 3. Scroll Reveal
         const revealElements = document.querySelectorAll('.reveal');
-        
         const revealOnScroll = () => {
             const windowHeight = window.innerHeight;
-            const elementVisible = 150; // Distância em pixels para ativar a animação
-
+            const elementVisible = 150;
             revealElements.forEach((element) => {
                 const elementTop = element.getBoundingClientRect().top;
                 if (elementTop < windowHeight - elementVisible) {
@@ -741,9 +680,7 @@
                 }
             });
         };
-
         window.addEventListener('scroll', revealOnScroll);
-        // Executar uma vez no carregamento para elementos visíveis
         revealOnScroll();
 
         // 4. Barra de Progresso de Leitura
@@ -752,6 +689,54 @@
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // 5. LÓGICA DO PWA (Service Worker e Instalação)
+        let deferredPrompt;
+        const installBanner = document.getElementById('pwa-install-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const closeBtn = document.getElementById('pwa-close-btn');
+
+        // Registar o Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => console.log('Service Worker registado com sucesso:', registration.scope))
+                    .catch(error => console.log('Falha ao registar o Service Worker:', error));
+            });
+        }
+
+        // Capturar o evento de instalação
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Mostrar o banner personalizado após 3 segundos
+            setTimeout(() => {
+                installBanner.classList.add('show');
+            }, 3000);
+        });
+
+        // Ação do botão Instalar
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                installBanner.classList.remove('show');
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Escolha do utilizador: ${outcome}`);
+                deferredPrompt = null;
+            }
+        });
+
+        // Fechar o banner
+        closeBtn.addEventListener('click', () => {
+            installBanner.classList.remove('show');
+        });
+
+        // Esconder o banner se a app já estiver instalada
+        window.addEventListener('appinstalled', () => {
+            installBanner.classList.remove('show');
+            console.log('LiluTrans PWA foi instalada com sucesso!');
         });
     </script>
 </body>
