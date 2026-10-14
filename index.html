@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiluTrans - Transporte de Carga e Mercadorias</title>
+    <meta name="description" content="Transporte de carga e mercadorias em Luanda, Angola. Aluguer de carrinhas e camiões para entregas rápidas e seguras. Peça o seu orçamento!">
+    
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,6 +32,7 @@
             }
         }
     </script>
+    
     <style>
         html { scroll-behavior: smooth; }
         .hero-bg {
@@ -75,7 +80,9 @@
                     <a href="#inicio" class="text-navy font-semibold hover:text-gold transition">Início</a>
                     <a href="#servicos" class="text-navy font-semibold hover:text-gold transition">Serviços</a>
                     <a href="#como-funciona" class="text-navy font-semibold hover:text-gold transition">Como Funciona</a>
+                    <a href="#calculadora" class="text-navy font-semibold hover:text-gold transition">Simulador</a>
                     <a href="#diferenciais" class="text-navy font-semibold hover:text-gold transition">Diferenciais</a>
+                    <a href="#faq" class="text-navy font-semibold hover:text-gold transition">FAQ</a>
                     <a href="#contactos" class="text-navy font-semibold hover:text-gold transition">Contactos</a>
                 </nav>
 
@@ -101,7 +108,9 @@
                 <a href="#inicio" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Início</a>
                 <a href="#servicos" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Serviços</a>
                 <a href="#como-funciona" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Como Funciona</a>
+                <a href="#calculadora" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Simulador de Frete</a>
                 <a href="#diferenciais" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Diferenciais</a>
+                <a href="#faq" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">FAQ</a>
                 <a href="#contactos" class="block px-3 py-2 text-navy font-semibold hover:bg-ice rounded-md">Contactos</a>
                 <a href="#contactos" class="block text-center mt-4 bg-gold text-navy font-bold py-3 px-6 rounded-full shadow-md">Solicite já o seu orçamento!</a>
             </div>
@@ -239,7 +248,71 @@
         </div>
     </section>
 
-    <!-- 5. DIFERENCIAIS -->
+    <!-- 5. SECÇÃO CALCULADORA DE FRETE (NOVA) -->
+    <section id="calculadora" class="py-20 bg-ice">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-4">Simule o seu Frete</h2>
+                <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-gray-600">Obtenha uma estimativa instantânea do valor do seu transporte.</p>
+            </div>
+
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
+                <form id="freight-calculator-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Distância -->
+                    <div>
+                        <label for="distancia" class="block text-sm font-semibold text-navy mb-2">Distância (em km)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-route text-gray-400"></i>
+                            </div>
+                            <input type="number" id="distancia" name="distancia" min="1" required class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition" placeholder="Ex: 150">
+                        </div>
+                    </div>
+
+                    <!-- Peso / Volume -->
+                    <div>
+                        <label for="peso" class="block text-sm font-semibold text-navy mb-2">Peso/Volume (kg ou m³)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-weight-hanging text-gray-400"></i>
+                            </div>
+                            <input type="number" id="peso" name="peso" min="1" required class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition" placeholder="Ex: 50">
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Carga -->
+                    <div>
+                        <label for="tipo_carga" class="block text-sm font-semibold text-navy mb-2">Tipo de Carga</label>
+                        <select id="tipo_carga" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/50 transition bg-white">
+                            <option value="1.0">Carga Normal</option>
+                            <option value="1.3">Carga Frágil (+30%)</option>
+                            <option value="1.5">Carga Perigosa/Especial (+50%)</option>
+                        </select>
+                    </div>
+
+                    <!-- Botão de Calcular -->
+                    <div class="flex items-end">
+                        <button type="button" id="btn-calcular" class="w-full bg-navy text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-navy/90 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Calcular Estimativa
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Resultado da Calculadora -->
+                <div id="resultado-calculadora" class="hidden mt-8 p-6 bg-ice rounded-xl border-l-4 border-gold shadow-sm">
+                    <p class="text-sm text-gray-500 mb-1">Estimativa de Frete:</p>
+                    <p class="text-3xl font-extrabold text-navy mb-2" id="valor-estimado">0,00 Kz</p>
+                    <p class="text-xs text-gray-400 mb-4">*Valor aproximado. O preço final pode variar após verificação detalhada da carga.</p>
+                    <a href="#" id="link-whatsapp-calculadora" target="_blank" class="inline-flex items-center gap-2 text-gold font-bold hover:text-yellow-600 transition">
+                        <i class="fa-brands fa-whatsapp text-xl"></i> Confirmar este valor no WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SECÇÃO DE DIFERENCIAIS -->
     <section id="diferenciais" class="py-20 bg-navy text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -290,10 +363,75 @@
         </div>
     </section>
 
-    <!-- 6. CONTACTOS E ORÇAMENTOS -->
-    <section id="contactos" class="py-20 bg-ice">
+    <!-- 7. SECÇÃO FAQ (NOVA) -->
+    <section id="faq" class="py-20 bg-ice">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-4">Perguntas Frequentes</h2>
+                <div class="w-24 h-1 bg-gold mx-auto rounded-full mb-6"></div>
+                <p class="text-lg text-gray-600">Tire as suas dúvidas antes de solicitar o seu transporte.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Pergunta 1 -->
+                <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
+                        <span>Vocês transportam mercadorias frágeis?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-gold"></i>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 pt-0 text-sm leading-relaxed border-t border-gray-100">
+                        Sim. A LiluTrans possui experiência no transporte de cargas diversas, incluindo mercadorias frágeis. A sua carga é embalada e fixada com todo o cuidado necessário para garantir que chegue intacta ao destino. Recomendamos que nos informe antecipadamente sobre a natureza da carga para prepararmos o veículo adequado.
+                    </div>
+                </details>
+
+                <!-- Pergunta 2 -->
+                <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
+                        <span>Qual é o prazo de entrega para fora de Luanda?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-gold"></i>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 pt-0 text-sm leading-relaxed border-t border-gray-100">
+                        O prazo de entrega varia consoante a distância e as condições das vias. Para entregas interprovinciais, normalmente o prazo é acordado no momento do orçamento. Garantimos pontualidade rigorosa e mantemos o cliente informado sobre o estado da entrega.
+                    </div>
+                </details>
+
+                <!-- Pergunta 3 -->
+                <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
+                        <span>Como é feito o pagamento?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-gold"></i>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 pt-0 text-sm leading-relaxed border-t border-gray-100">
+                        O pagamento é combinado no momento da contratação do serviço. Trabalhamos com transferência bancária, depósito ou pagamento em numerário (mediante acordo prévio). Para novos clientes, geralmente solicitamos um sinal de reserva e o restante na entrega.
+                    </div>
+                </details>
+
+                <!-- Pergunta 4 -->
+                <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 hover:bg-gray-50 transition text-navy">
+                        <span>A mercadoria tem seguro?</span>
+                        <span class="transition group-open:rotate-180">
+                            <i class="fa-solid fa-chevron-down text-gold"></i>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 pt-0 text-sm leading-relaxed border-t border-gray-100">
+                        A nossa frota é segura e equipada, e todos os cuidados são tomados para evitar imprevistos. Para cargas de alto valor, podemos providenciar um seguro específico mediante solicitação e custo adicional. Fale connosco para sabermos como o podemos ajudar.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. SECÇÃO DE CONTACTOS E ORÇAMENTOS -->
+    <section id="contactos" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row">
+            <div class="bg-ice rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-gray-100">
                 
                 <!-- Lado Esquerdo: Informação -->
                 <div class="lg:w-2/5 bg-navy p-10 text-white flex flex-col justify-between relative overflow-hidden">
@@ -332,7 +470,7 @@
                 </div>
 
                 <!-- Lado Direito: Formulário -->
-                <div class="lg:w-3/5 p-10">
+                <div class="lg:w-3/5 p-10 bg-white">
                     <h3 class="text-2xl font-bold text-navy mb-6">Solicite já o seu orçamento</h3>
                     <form action="https://wa.me/244949870787" method="get" target="_blank" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -372,7 +510,7 @@
         </div>
     </section>
 
-    <!-- 7. RODAPÉ -->
+    <!-- 9. RODAPÉ -->
     <footer class="bg-[#051220] text-white pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
@@ -399,7 +537,9 @@
                         <li><a href="#inicio" class="text-gray-400 hover:text-gold transition">Início</a></li>
                         <li><a href="#servicos" class="text-gray-400 hover:text-gold transition">Serviços</a></li>
                         <li><a href="#como-funciona" class="text-gray-400 hover:text-gold transition">Como Funciona</a></li>
+                        <li><a href="#calculadora" class="text-gray-400 hover:text-gold transition">Simulador de Frete</a></li>
                         <li><a href="#diferenciais" class="text-gray-400 hover:text-gold transition">Diferenciais</a></li>
+                        <li><a href="#faq" class="text-gray-400 hover:text-gold transition">FAQ</a></li>
                         <li><a href="#contactos" class="text-gray-400 hover:text-gold transition">Contactos</a></li>
                     </ul>
                 </div>
@@ -427,7 +567,7 @@
             <!-- Direitos Reservados -->
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-gray-500 text-sm text-center md:text-left">
-                    &copy; 2023 LiluTrans. Todos os direitos reservados.
+                    &copy; 2026 LiluTrans. Todos os direitos reservados.
                 </p>
                 <div class="flex gap-4 text-sm font-semibold text-gray-400">
                     <span class="flex items-center gap-1"><i class="fa-solid fa-check text-gold"></i> Rápido</span>
@@ -443,8 +583,9 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Script Simples para o Menu Mobile -->
+    <!-- SCRIPTS -->
     <script>
+        // 1. Menu Mobile
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
 
@@ -458,6 +599,38 @@
             link.addEventListener('click', () => {
                 menu.classList.add('hidden');
             });
+        });
+
+        // 2. Calculadora de Frete
+        document.getElementById('btn-calcular').addEventListener('click', function() {
+            // Obter valores
+            const distancia = parseFloat(document.getElementById('distancia').value);
+            const peso = parseFloat(document.getElementById('peso').value);
+            const multiplicadorCarga = parseFloat(document.getElementById('tipo_carga').value);
+
+            // Validação
+            if (!distancia || !peso || distancia <= 0 || peso <= 0) {
+                alert("Por favor, insira valores válidos para distância e peso/volume.");
+                return;
+            }
+
+            // Fórmula de Cálculo (AJUSTE ESTES VALORES CONFORME A SUA REALIDADE)
+            const taxaBase = 5000; // Taxa fixa de partida em Kz
+            const custoPorKm = 150; // Custo por km em Kz
+            const custoPorKg = 50;  // Custo por kg/m³ em Kz
+
+            let valorEstimado = (taxaBase + (distancia * custoPorKm) + (peso * custoPorKg)) * multiplicadorCarga;
+
+            // Formatar para Kwanza
+            const valorFormatado = valorEstimado.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' });
+
+            // Mostrar resultado
+            document.getElementById('valor-estimado').innerText = valorFormatado;
+            document.getElementById('resultado-calculadora').classList.remove('hidden');
+
+            // Atualizar link do WhatsApp com os dados
+            const mensagem = `Olá, fiz uma simulação no site.%0A%0A*Distância:* ${distancia} km%0A*Peso/Volume:* ${peso}%0A*Tipo de Carga:* ${document.getElementById('tipo_carga').options[document.getElementById('tipo_carga').selectedIndex].text}%0A*Valor Estimado:* ${valorFormatado}%0A%0AGostaria de confirmar este orçamento.`;
+            document.getElementById('link-whatsapp-calculadora').href = `https://wa.me/244949870787?text=${mensagem}`;
         });
     </script>
 </body>
